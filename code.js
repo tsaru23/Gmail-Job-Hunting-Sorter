@@ -13,7 +13,7 @@ const PROPERTIES = PropertiesService.getScriptProperties();
 const GEMINI_API_KEY = PROPERTIES.getProperty('GEMINI_API_KEY');
 
 // 検索クエリ
-const SEARCH_QUERY = 'is:unread -label:処理済み (subject:("締め切り" OR "締切" OR "期限" OR "提出" OR "予約" OR "受験" OR "受検" OR "テスト") OR "エントリーシート" OR "ES") ("インターン" OR "選考" ) -("メルマガ" OR "ニュースレター" OR "コラム" OR "マガジン")';
+const SEARCH_QUERY = 'is:unread -label:処理済み (subject:("締め切り" OR "締切" OR "〆切" OR "期限" OR "提出" OR "予約" OR "受験" OR "受検" OR "テスト") OR "エントリーシート" OR "ES") ("インターン" OR "選考" ) -("メルマガ" OR "ニュースレター" OR "コラム" OR "マガジン")';
 
 /**
  * 1時間に1回実行するメイン処理
