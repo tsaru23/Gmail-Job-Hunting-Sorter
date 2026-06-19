@@ -290,24 +290,14 @@ function setLabelColor(labelId, dayOfWeek) {
   const color = colors[dayOfWeek];
   if (!color) return;
 
-  const url = `https://gmail.googleapis.com/gmail/v1/users/me/labels/${labelId}`;
-  const token = ScriptApp.getOAuthToken();
-  const payload = {
-    color: color
-  };
-  const options = {
-    method: 'patch',
-    contentType: 'application/json',
-    headers: { Authorization: `Bearer ${token}` },
-    payload: JSON.stringify(payload),
-    muteHttpExceptions: true
-  };
-  
-  const response = UrlFetchApp.fetch(url, options);
-  if (response.getResponseCode() === 200) {
+  // GASの拡張サービス「Gmail API」を使用してラベルカラーを設定
+  try {
+    Gmail.Users.Labels.patch({
+      color: color
+    }, 'me', labelId);
     console.log(`ラベル「${labelId}」の色を「${dayOfWeek}」の色（背景色: ${color.backgroundColor}）に設定しました。`);
-  } else {
-    console.error(`ラベル「${labelId}」の色設定に失敗しました: ${response.getContentText()}`);
+  } catch (apiError) {
+    console.error(`Gmail APIでの色設定に失敗しました: ${apiError.message}`);
   }
 }
 
