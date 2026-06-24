@@ -13,7 +13,8 @@ const PROPERTIES = PropertiesService.getScriptProperties();
 const GEMINI_API_KEY = PROPERTIES.getProperty('GEMINI_API_KEY');
 const CALENDAR_NAME = PROPERTIES.getProperty('CALENDAR_NAME') || '就活';
 
-// 検索クエリ（件名・本文問わず、関連キーワードが含まれていればGeminiに判定させる）
+// 【カスタマイズ可能】検索クエリ（件名・本文問わず、関連キーワードが含まれていればGeminiに判定させる）
+// 自身の環境に合わせて「"企業名"」を追加するなど、自由に変更可能です。
 const SEARCH_QUERY = 'is:unread -label:処理済み ("締め切り" OR "締切" OR "〆切" OR "期限" OR "提出" OR "予約" OR "受験" OR "受検" OR "テスト" OR "エントリーシート" OR "ES" OR "インターン" OR "選考") -("メルマガ" OR "ニュースレター" OR "コラム" OR "マガジン")';
 
 /**
@@ -276,7 +277,9 @@ function createCalendarEvent(dateStr, thread, deadlineInfo) {
  * @param {string} dayOfWeek 曜日（'月'〜'日'）
  */
 function setLabelColor(labelId, dayOfWeek) {
-  // Gmail APIがサポートしているカラーパレットから設定
+  // 【カスタマイズ可能】曜日ごとのラベル色設定
+  // Gmail APIがサポートしている公式カラーパレットから設定
+  // 許可されているカラーコード（例: #a479e2, #fb4c2f, #4a86e8, #16a766, #fad165, #cccccc など）自由に色を割り当てられます。
   const colors = {
     '月': { backgroundColor: '#a479e2', textColor: '#ffffff' }, // 紫
     '火': { backgroundColor: '#fb4c2f', textColor: '#ffffff' }, // 赤
