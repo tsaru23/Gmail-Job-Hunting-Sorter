@@ -13,8 +13,8 @@ const PROPERTIES = PropertiesService.getScriptProperties();
 const GEMINI_API_KEY = PROPERTIES.getProperty('GEMINI_API_KEY');
 const CALENDAR_NAME = PROPERTIES.getProperty('CALENDAR_NAME') || '就活';
 
-// 検索クエリ
-const SEARCH_QUERY = 'is:unread -label:処理済み (subject:("締め切り" OR "締切" OR "〆切" OR "期限" OR "提出" OR "予約" OR "受験" OR "受検" OR "テスト") OR "エントリーシート" OR "ES") ("インターン" OR "選考" ) -("メルマガ" OR "ニュースレター" OR "コラム" OR "マガジン")';
+// 検索クエリ（件名・本文問わず、関連キーワードが含まれていればGeminiに判定させる）
+const SEARCH_QUERY = 'is:unread -label:処理済み ("締め切り" OR "締切" OR "〆切" OR "期限" OR "提出" OR "予約" OR "受験" OR "受検" OR "テスト" OR "エントリーシート" OR "ES" OR "インターン" OR "選考") -("メルマガ" OR "ニュースレター" OR "コラム" OR "マガジン")';
 
 /**
  * 1時間に1回実行するメイン処理
@@ -278,10 +278,10 @@ function createCalendarEvent(dateStr, thread, deadlineInfo) {
 function setLabelColor(labelId, dayOfWeek) {
   // Gmail APIがサポートしているカラーパレットから設定
   const colors = {
-    '月': { backgroundColor: '#b896e4', textColor: '#ffffff' }, // 紫
-    '火': { backgroundColor: '#e68285', textColor: '#ffffff' }, // 赤
-    '水': { backgroundColor: '#a2c2e8', textColor: '#ffffff' }, // 青
-    '木': { backgroundColor: '#b3e1b3', textColor: '#ffffff' }, // 緑
+    '月': { backgroundColor: '#a479e2', textColor: '#ffffff' }, // 紫
+    '火': { backgroundColor: '#fb4c2f', textColor: '#ffffff' }, // 赤
+    '水': { backgroundColor: '#4a86e8', textColor: '#ffffff' }, // 青
+    '木': { backgroundColor: '#16a766', textColor: '#ffffff' }, // 緑
     '金': { backgroundColor: '#fad165', textColor: '#ffffff' }, // 黄色
     '土': { backgroundColor: '#cccccc', textColor: '#ffffff' }, // グレー
     '日': { backgroundColor: '#cccccc', textColor: '#ffffff' }  // グレー
