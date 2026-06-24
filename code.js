@@ -105,6 +105,62 @@ function main() {
       Utilities.sleep(13000);
     }
   }
+
+  // 最後に、過去の期限ラベルをクリーンアップする（デフォルト7日経過で削除）
+  cleanupOldLabels(7);
+}
+
+/**
+ * 期限から指定日数以上経過したラベルを自動で削除する
+ * @param {number} daysPast 経過日数（この日数を過ぎたら削除）
+ */
+function cleanupOldLabels(daysPast) {
+  console.log(`期限から ${daysPast} 日経過した古いラベルのクリーンアップを開始します。`);
+  const labels = GmailApp.getUserLabels();
+  const today = new Date();
+  const currentYear = today.getFullYear();
+  let deletedCount = 0;
+
+  // ラベル名が「MM/DD(曜日) まで」の形式にマッチするか判定する正規表現
+  const regex = /^(\d{2})\/(\d{2})\(.\) まで$/;
+
+  for (let i = 0; i < labels.length; i++) {
+    const label = labels[i];
+    const name = label.getName();
+    const match = name.match(regex);
+
+    if (match) {
+      const month = parseInt(match[1], 10);
+      const day = parseInt(match[2], 10);
+      
+      // 今年として日付オブジェクトを作成
+      const labelDate = new Date(currentYear, month - 1, day);
+      
+      // 今日との差分（日数）を計算
+      let diffDays = (today - labelDate) / (1000 * 60 * 60 * 24);
+      
+      // 年またぎの補正（例: 今日が1月でラベルが12月の場合、diffDaysはマイナスになり未来と誤認されるため補正）
+      if (diffDays < -180) {
+        // ラベルは昨年のもの
+        diffDays += 365;
+      } else if (diffDays > 180) {
+        // ラベルは来年のもの（本来あり得ないが念のため）
+        diffDays -= 365;
+      }
+      
+      // 経過日数が指定した日数を過ぎていたら削除
+      if (diffDays > daysPast) {
+        console.log(`古いラベルを削除します: ${name} (約 ${Math.floor(diffDays)} 日経過)`);
+        try {
+          label.deleteLabel();
+          deletedCount++;
+        } catch (e) {
+          console.error(`ラベル「${name}」の削除中にエラーが発生しました: ${e.message}`);
+        }
+      }
+    }
+  }
+  console.log(`クリーンアップ完了: ${deletedCount} 件のラベルを削除しました。`);
 }
 
 /**
