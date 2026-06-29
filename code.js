@@ -15,7 +15,7 @@ const CALENDAR_NAME = PROPERTIES.getProperty('CALENDAR_NAME') || '就活';
 
 // 【カスタマイズ可能】検索クエリ（件名・本文問わず、関連キーワードが含まれていればGeminiに判定させる）
 // 自身の環境に合わせて「"企業名"」を追加するなど、自由に変更可能です。
-const SEARCH_QUERY = 'is:unread -label:処理済み ("締め切り" OR "締切" OR "〆切" OR "期限" OR "提出" OR "予約" OR "受験" OR "受検" OR "テスト" OR "エントリーシート" OR "ES" OR "インターン" OR "選考") -("メルマガ" OR "ニュースレター" OR "コラム" OR "マガジン")';
+const SEARCH_QUERY = 'is:unread -label:処理済み ("締め切り" OR "締切" OR "〆切" OR "期限" OR "提出" OR "予約" OR "受験" OR "受検" OR "テスト" OR "エントリーシート" OR "ES" OR "インターン" OR "ワークショップ" OR "選考") -("メルマガ" OR "ニュースレター" OR "コラム" OR "マガジン")';
 
 /**
  * 1時間に1回実行するメイン処理
